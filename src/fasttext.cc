@@ -652,6 +652,10 @@ void FastText::trainThread(int32_t threadId) {
   std::ifstream ifs(args_->input);
   utils::seek(ifs, threadId * utils::size(ifs) / args_->thread);
 
+  //modified by GemHuang: the start position could be in the middle of a line, so skipt the partial line here
+  std::string partial_line;
+  std::getline(ifs, partial_line);
+
   Model::State state(args_->dim, output_->size(0), threadId);
 
   const int64_t ntokens = dict_->ntokens();
